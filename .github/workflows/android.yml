@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
-      - develop
+      - master
 
 jobs:
   apk:
@@ -35,7 +34,16 @@ jobs:
           status: ${{ job.status }}
           author_name: Github Action Test # default: 8398a7@action-slack
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          payload-file-path: "app/build/outputs/apk/debug/app-debug.apk"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always() # Pick up events even if the job fails or is canceled.
+        
+      - name: Slack - Upload APK
+        uses: MeilCli/slack-upload-file@v1.0.0
+        with:
+          slack_token: ${{ secrets.SLACK_TOKEN }}
+          channels: ${{ secrets.SLACK_CHANNEL }}
+          initial_comment: 'APK File Upload'
+          file_type: 'apk'
+          file_name: 'app-debug.apk'
+          file_path: './app/build/outputs/apk/debug/app-debug.apk'
