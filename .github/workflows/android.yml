@@ -22,9 +22,7 @@ jobs:
           java-version: 11
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: upload apk on slack
-        run: curl https://slack.com/api/files.upload -F token={xoxb-3502146674819-3833535877392-N6JgdOX54qQ4XQHdXn5RUaUc} -F channels={tech-개발} -F file=@app/build/outputs/apk/debug/app-debug.apk
-      
+        
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
@@ -37,6 +35,7 @@ jobs:
           status: ${{ job.status }}
           author_name: Github Action Test # default: 8398a7@action-slack
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          payload-file-path: "app/build/outputs/apk/debug/app-debug.apk"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always() # Pick up events even if the job fails or is canceled.
