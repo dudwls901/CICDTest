@@ -36,13 +36,18 @@ jobs:
       run: chmod +x gradlew
     - name: Build debug APK
       run: bash ./gradlew assembleDebug --stacktrace
-
-    - name: Run detekt
-      run: ./gradlew detekt
-
+      
     - name: Run unit tests
       run: ./gradlew testDebugUnitTest
 
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ matrix.api-level }}
+        target: ${{ matrix.target }}
+        arch: x86_64
+        profile: Nexus 6
+        script: ./gradlew connectedCheck --stacktrace
 
     - name: action-slack
       uses: 8398a7/action-slack@v3
