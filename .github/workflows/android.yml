@@ -37,10 +37,6 @@ jobs:
     - name: Build debug APK
       run: bash ./gradlew assembleDebug --stacktrace
 
-
-    - name: Run ktlint
-      run: ./gradlew ktlintCheck
-
     - name: Run detekt
       run: ./gradlew detekt
 
