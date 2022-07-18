@@ -12,6 +12,10 @@ jobs:
   apk:
     name: Generate APK
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [32]
+        target: [default]
 
     steps:
     - uses: actions/checkout@v3
